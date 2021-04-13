@@ -1,26 +1,29 @@
 from flask import render_template
 
 
-class View():
+class View:
 
-    _template = None
-    _layout = None
-    _params = {}
+    def __init__(self, template=None, language=None):
+        self.data = {
+            'template': {
+                'language': language
+            }
+        }
+        self.template = template
 
-    def _setTemplate(self, template_path):
-        self._template = template_path
-    
-    def _setParam(self, name, value):
-        self._params[name] = value
-
-    def _render(self):
-        return render_template(self._template, **self._params)
-
-    def setLayout(self, layout_path):
-        self._setParam('layout', layout_path)
-
-    def setParam(self, name, value):
-        self._setParam(name, value)
+    def addData(self, data):
+        self.data.update(data)
 
     def render(self):
-        return self._render()
+        self._prepageData()
+        return render_template(self.template, **self.data)
+
+    def _prepageData(self):
+        self._preparePageData()
+        self._prepareTemplateData()
+
+    def _prepareTemplateData(self):
+        self.data.update(self.data['template'])
+
+    def _preparePageData(self):
+        pass
