@@ -16,16 +16,16 @@ class ValidatedField:
     def validate(self, value):
         if value is None:
             if self.required:
-                self._addError(f'{self.name} is required')
+                self.addError(f'{self.name} is required')
         else:
             for rule in self.rules:
                 if not rule['callback'](value):
-                    self._addError(message)
+                    self.addError(rule['message'])
 
     def getErrors(self):
         return {self.name: self.errors}
 
-    def _addError(message):
+    def addError(self, message):
         if not self.hasErrors:
             self.hasErrors = True
         self.errors.append(message)
