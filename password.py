@@ -2,6 +2,7 @@ import random
 import hashlib
 
 import config
+from vendor.Ukubuka.exceptions.WrongPassword import WrongPassword
 
 
 def getSecret(abc, length):
@@ -20,8 +21,8 @@ def getHash(string):
 def getPassword(password=None, length=None, salt=None):
     if length is None:
         length = config.PASSWORD_LENGTH
-    elif not isinstance(length, int) or config.PASSWORD_LENGTH_MIN > length > config.PASSWORD_LENGTH_MAX:
-        return None, None, None
+    elif config.PASSWORD_LENGTH_MIN >= length >= config.PASSWORD_LENGTH_MAX:
+        raise WrongPassword('Wrong length of the password')
     if password is None:
         password = getSecret(config.PASSWORD_ABC_FULL_SAFE, length)
     if salt is None:
