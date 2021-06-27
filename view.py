@@ -5,9 +5,7 @@ class View:
 
     def __init__(self, template=None, language=None):
         self.data = {
-            'template': {
-                'language': language
-            }
+            't': {}
         }
         self.template = template
 
@@ -15,15 +13,15 @@ class View:
         self.data.update(data)
 
     def render(self):
-        self._prepageData()
+        self.prepageData()
         return render_template(self.template, **self.data)
 
-    def _prepageData(self):
-        self._preparePageData()
-        self._prepareTemplateData()
+    def prepageData(self):
+        self.prepareTemplateData()
+        self.preparePageData()
 
-    def _prepareTemplateData(self):
-        self.data.update(self.data['template'])
+    def prepareTemplateData(self):
+        pass
 
-    def _preparePageData(self):
+    def preparePageData(self):
         pass
