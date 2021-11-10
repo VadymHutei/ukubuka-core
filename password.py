@@ -2,7 +2,7 @@ import random
 import hashlib
 
 import config
-from vendor.Ukubuka.exceptions.WrongPassword import WrongPassword
+from vendor.ukubuka.exceptions.WrongPassword import WrongPassword
 
 
 def getSecret(abc, length):
