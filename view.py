@@ -4,24 +4,45 @@ from flask import render_template
 class View:
 
     def __init__(self, template=None):
-        self.template = template
-        self.data = {}
-        self.templateData = {}
+        self._template = template
+        self._data = {}
+        self._templateData = {}
 
-    def addData(self, data):
-        self.data.update(data)
+    @property
+    def template(self):
+        return self._template
 
-    def prepageData(self):
-        self.prepareTemplateData()
-        self.preparePageData()
-        self.data['t'] = self.templateData
+    @template.setter
+    def template(self, template):
+        self._template = template
 
-    def prepareTemplateData(self):
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data):
+        self._data.update(data)
+
+    @property
+    def templateData(self):
+        return self._templateData
+
+    @templateData.setter
+    def templateData(self, data):
+        self._templateData.update(data)
+
+    def _prepageData(self):
+        self._prepareTemplateData()
+        self._preparePageData()
+        self._data['t'] = self._templateData
+
+    def _prepareTemplateData(self):
         pass
 
-    def preparePageData(self):
+    def _preparePageData(self):
         pass
 
     def render(self):
-        self.prepageData()
-        return render_template(self.template, **self.data)
+        self._prepageData()
+        return render_template(self._template, **self._data)
