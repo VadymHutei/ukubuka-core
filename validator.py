@@ -1,7 +1,7 @@
 import re
 
 
-class UkubukaValidator:
+class Validator:
 
     @staticmethod
     def email(email):
