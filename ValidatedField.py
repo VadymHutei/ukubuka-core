@@ -1,9 +1,10 @@
 class ValidatedField:
 
-    def __init__(self, name, required):
+    def __init__(self, name, required=True, emptyAllowed=False):
         self._name = name
         self._value = None
         self._required = required
+        self._emptyAllowed = emptyAllowed
         self._rules = []
         self._hasErrors = False
         self._errors = []
@@ -35,6 +36,10 @@ class ValidatedField:
         if self._value is None:
             if self._required:
                 self._addError(f'{self._name} is required')
+
+        if not self._value:
+            if not self._emptyAllowed:
+                self._addError(f'{self._name} cannot be empty')
         else:
             for rule in self._rules:
                 if not rule['callback'](self._value):
