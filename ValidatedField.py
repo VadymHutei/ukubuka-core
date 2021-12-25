@@ -1,35 +1,47 @@
 class ValidatedField:
 
     def __init__(self, name, required):
-        self.name = name
-        self.value = None
-        self.required = required
-        self.rules = []
-        self.hasErrors = False
-        self.errors = []
+        self._name = name
+        self._value = None
+        self._required = required
+        self._rules = []
+        self._hasErrors = False
+        self._errors = []
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def hasErrors(self):
+        return self._hasErrors
+
+    def _addError(self, message):
+        if not self._hasErrors:
+            self._hasErrors = True
+        self._errors.append(message)
 
     def addRule(self, rule, message):
-        self.rules.append({
+        self._rules.append({
             'callback': rule,
-            'message': message
+            'message': message,
         })
 
     def validate(self):
-        if self.value is None:
-            if self.required:
-                self.addError(f'{self.name} is required')
+        if self._value is None:
+            if self._required:
+                self._addError(f'{self._name} is required')
         else:
-            for rule in self.rules:
-                if not rule['callback'](self.value):
-                    self.addError(rule['message'])
+            for rule in self._rules:
+                if not rule['callback'](self._value):
+                    self._addError(rule['message'])
 
     def getErrors(self):
-        return {self.name: self.errors}
-
-    def addError(self, message):
-        if not self.hasErrors:
-            self.hasErrors = True
-        self.errors.append(message)
+        return {self._name: self._errors}
 
     def setValue(self, value):
-        self.value = value
+        self._value = value
