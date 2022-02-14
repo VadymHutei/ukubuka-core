@@ -21,6 +21,22 @@ class ValidatedField:
     def hasErrors(self):
         return self._hasErrors
 
+    @property
+    def required(self):
+        return self._required
+
+    @property
+    def emptyAllowed(self):
+        return self._emptyAllowed
+
+    @property
+    def errors(self):
+        return {self._name: self._errors}
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+
     def _addError(self, message):
         if not self._hasErrors:
             self._hasErrors = True
@@ -37,16 +53,11 @@ class ValidatedField:
             if self._required:
                 self._addError(f'{self._name} is required')
 
-        if not self._value:
-            if not self._emptyAllowed:
+        if isinstance(self._value, str) and not self._value:
+            if not self._emptyAllowed and self._required:
                 self._addError(f'{self._name} cannot be empty')
+
         else:
             for rule in self._rules:
                 if not rule['callback'](self._value):
                     self._addError(rule['message'])
-
-    def getErrors(self):
-        return {self._name: self._errors}
-
-    def setValue(self, value):
-        self._value = value

@@ -9,7 +9,7 @@ class AbstractFormValidator(ABC):
         self._errors = {}
 
         for field in self._fields:
-            field.setValue(form[field.name])
+            field.value = form.get(field.name)
             field.validate()
             if field.hasErrors:
                 self._addErrors(field.getErrors())
@@ -32,4 +32,16 @@ class AbstractFormValidator(ABC):
         self._errors.update(errors)
 
     def getFormData(self):
+        result = {}
+
+        for field in self._fields:
+            if field.required and field.emptyAllowed:
+                pass
+            if field.required and not field.emptyAllowed:
+                pass
+            if not field.required and field.emptyAllowed:
+                pass
+            if not field.required and not field.emptyAllowed:
+                pass
+
         return {field.name: field.value for field in self._fields}
